@@ -3,6 +3,12 @@ cimport numpy as np
 cimport cython
 import numpy as np
 import time
+from cython.parallel import prange
+
+from libc.math cimport sin
+from libc.math cimport cos
+from libc.math cimport atan2
+from libc.math cimport M_PI
 begin = time.time()
 
 # Add type annotations, turn off bounds checking and wraparound
@@ -13,19 +19,19 @@ begin = time.time()
 @cython.initializedcheck(False) # Checks that memory is initialised when passed in
 cdef F(np.ndarray[double, ndim=2] f, np.ndarray[double, ndim=2] r, np.ndarray[double, ndim=1] q):
     cdef int i, j
-    cdef double dx, dy, F
-
+    cdef double dx, dy, F, theta
+    cdef int N
+    N = len(f)
     f[:] = 0
-    for i in range(len(f)):
-        for j in range(len(f)):
+    for i in prange(N, nogil=True):
+        for j in range(N):
             if i != j:
                 dx = r[i, 0] - r[j, 0]
                 dy = r[i, 1] - r[j, 1]
-                theta = np.arctan2(dy, dx)
-                F = q[i]*q[j]/(4*np.pi*8.854e-12*(dx**2 + dy**2))
-
-                f[i, 0] += F*np.cos(theta)
-                f[i, 1] += F*np.sin(theta)
+                theta = atan2(dy, dx)
+                F = q[i]*q[j]/(4*M_PI*8.854e-12*(dx*dx + dy*dy))
+                f[i, 0] += F*cos(theta)
+                f[i, 1] += F*sin(theta)
     
 N = 1000
 np.random.seed(0)
