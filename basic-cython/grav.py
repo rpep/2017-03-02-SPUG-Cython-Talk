@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import time
+begin = time.time()
 
 def F(f, r, q):
     f[:] = 0
@@ -13,7 +15,7 @@ def F(f, r, q):
                 f[i, 0] += F*np.cos(theta)
                 f[i, 1] += F*np.sin(theta)
     
-N = 300
+N = 10000
 np.random.seed(0)
 r = np.random.uniform(0, 1, (N, 2))
 f = np.zeros_like(r)
@@ -28,5 +30,5 @@ while t < T:
     F(f, r, q)
     r += f*dt*dt/m
     t += dt
-
-print('Python r[0] = {}'.format(r[0]))
+end = time.time()
+print(end - begin)
