@@ -12,7 +12,7 @@ void F(double *f, double *r, double *q, int N) {
     double Fval, theta, dx, dy;
     int i, j;
     for(i = 0; i < N; i++) {
-        for(j = 0; j < N; j++) {
+        for(j = 0; j < 2; j++) {
             f[2*i + j] = 0;
         }
     }
