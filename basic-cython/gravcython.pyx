@@ -16,7 +16,7 @@ def F(f, r, q):
                 f[i, 0] += F*np.cos(theta)
                 f[i, 1] += F*np.sin(theta)
     
-N = 10000
+N = 1000
 np.random.seed(0)
 r = np.random.uniform(0, 1, (N, 2))
 f = np.zeros_like(r)
