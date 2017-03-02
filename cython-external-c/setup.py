@@ -2,6 +2,9 @@ from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Distutils import build_ext as build_pyx
 import numpy
+import os
+
+os.environ['CC'] = 'gcc-6'
 
 setup(name='gravcython',
       ext_modules=[Extension('gravcython', ['gravcython.pyx'],
