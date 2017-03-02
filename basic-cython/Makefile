@@ -11,3 +11,4 @@ clean:
 	rm -rf __pycache__
 	rm -f *.so
 	rm -rf build
+	rm -rf gravcython.c
