@@ -1,8 +1,16 @@
 import matplotlib.pyplot as plt
 cimport numpy as np
+cimport cython
 import numpy as np
+import time
+begin = time.time()
 
-# Add type annotations
+# Add type annotations, turn off bounds checking and wraparound
+
+@cython.boundscheck(False) # Turns off IndexError type warnings - e.g. a = [1, 2, 3]; a[5]
+@cython.wraparound(False) # Turns off Python a[-1] indexing - will segfault.
+@cython.overflowcheck(False) # Check that no integer overflows occur with arithmetic operations
+@cython.initializedcheck(False) # Checks that memory is initialised when passed in
 cdef F(np.ndarray[double, ndim=2] f, np.ndarray[double, ndim=2] r, np.ndarray[double, ndim=1] q):
     cdef int i, j
     cdef double dx, dy, F
@@ -19,7 +27,7 @@ cdef F(np.ndarray[double, ndim=2] f, np.ndarray[double, ndim=2] r, np.ndarray[do
                 f[i, 0] += F*np.cos(theta)
                 f[i, 1] += F*np.sin(theta)
     
-N = 300
+N = 1000
 np.random.seed(0)
 r = np.random.uniform(0, 1, (N, 2))
 f = np.zeros_like(r)
@@ -35,4 +43,6 @@ while t < T:
     r += f*dt*dt/m
     t += dt
 
-print('Cython r[0] = {}'.format(r[0]))
+end = time.time()
+print(end - begin)
+
