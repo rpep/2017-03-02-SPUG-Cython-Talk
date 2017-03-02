@@ -3,11 +3,12 @@
 #include<math.h>
 #include<time.h>
 #include "grav.h"
+#include<omp.h>
 
 #define _USE_MATH_DEFINES
 
 int main(void) {
-    clock_t begin = clock();
+    double begin = omp_get_wtime();
     int N = 10000;
     double r[2*N];
     double f[2*N];
@@ -33,8 +34,7 @@ int main(void) {
             t += dt;
         }
     }
-
-    clock_t end = clock();
-    printf("Pure C time: %f", (double)(end - begin) / CLOCKS_PER_SEC);
+    double end = omp_get_wtime();
+    printf("Pure C time: %lf", (end - begin));
 
 }
